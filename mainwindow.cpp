@@ -13,11 +13,12 @@
 #include <QClipboard>
 #include <QCloseEvent>
 
-MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow), editor(nullptr), statusInfo(new QLabel(this))
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), editor(nullptr), statusInfo(new QLabel(this))
 {
     ui->setupUi(this);
-    editor = qobject_cast<CodeEditor*>(ui->plainTextEdit);
-    if (!editor) editor = new CodeEditor(this), setCentralWidget(editor);
+    editor = qobject_cast<CodeEditor *>(ui->plainTextEdit);
+    if (!editor)
+        editor = new CodeEditor(this), setCentralWidget(editor);
     experimenterName = QStringLiteral("潘翾寰");
     connect(ui->actionTextBackgroundColor, &QAction::triggered, this, &MainWindow::on_actionTextBackgroundColor_triggered);
     ui->actionToggleLineNumbers->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
@@ -48,7 +49,7 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionNewWindow_triggered()
 {
-    MainWindow* w = new MainWindow();
+    MainWindow *w = new MainWindow();
     w->setAttribute(Qt::WA_DeleteOnClose);
     w->show();
 }
@@ -56,9 +57,14 @@ void MainWindow::on_actionNewWindow_triggered()
 void MainWindow::on_actionOpen_triggered()
 {
     QString name = QFileDialog::getOpenFileName(this, "打开文件");
-    if (name.isEmpty()) return;
+    if (name.isEmpty())
+        return;
     QFile f(name);
-    if (!f.open(QFile::ReadOnly | QFile::Text)) { QMessageBox::warning(this, "提示", "无法打开文件"); return; }
+    if (!f.open(QFile::ReadOnly | QFile::Text))
+    {
+        QMessageBox::warning(this, "提示", "无法打开文件");
+        return;
+    }
     QTextStream in(&f);
     editor->setPlainText(in.readAll());
     f.close();
@@ -69,9 +75,17 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_actionSave_triggered()
 {
-    if (filePath.isEmpty()) { on_actionSaveAs_triggered(); return; }
+    if (filePath.isEmpty())
+    {
+        on_actionSaveAs_triggered();
+        return;
+    }
     QFile f(filePath);
-    if (!f.open(QFile::WriteOnly | QFile::Text)) { QMessageBox::warning(this, "提示", "无法保存文件"); return; }
+    if (!f.open(QFile::WriteOnly | QFile::Text))
+    {
+        QMessageBox::warning(this, "提示", "无法保存文件");
+        return;
+    }
     QTextStream out(&f);
     out << editor->toPlainText();
     f.flush();
@@ -82,7 +96,8 @@ void MainWindow::on_actionSave_triggered()
 void MainWindow::on_actionSaveAs_triggered()
 {
     QString name = QFileDialog::getSaveFileName(this, "另存为");
-    if (name.isEmpty()) return;
+    if (name.isEmpty())
+        return;
     filePath = name;
     on_actionSave_triggered();
     setWindowTitle(QFileInfo(filePath).fileName() + " - 文本编辑器");
@@ -92,7 +107,8 @@ void MainWindow::on_actionPrint_triggered()
 {
     QPrinter printer;
     QPrintDialog dlg(&printer, this);
-    if (dlg.exec() != QDialog::Accepted) return;
+    if (dlg.exec() != QDialog::Accepted)
+        return;
     editor->document()->print(&printer);
 }
 
@@ -110,7 +126,7 @@ void MainWindow::on_actionSelectAll_triggered() { editor->selectAll(); }
 
 void MainWindow::on_actionFind_triggered()
 {
-    FindDialog* dlg = new FindDialog(this);
+    FindDialog *dlg = new FindDialog(this);
     connect(dlg, &FindDialog::findNext, this, &MainWindow::doFindNext);
     connect(dlg, &FindDialog::findPrevious, this, &MainWindow::doFindPrev);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
@@ -119,7 +135,7 @@ void MainWindow::on_actionFind_triggered()
 
 void MainWindow::on_actionReplace_triggered()
 {
-    ReplaceDialog* dlg = new ReplaceDialog(this);
+    ReplaceDialog *dlg = new ReplaceDialog(this);
     connect(dlg, &ReplaceDialog::replaceOne, this, &MainWindow::doReplaceOne);
     connect(dlg, &ReplaceDialog::replaceAll, this, &MainWindow::doReplaceAll);
     connect(dlg, &ReplaceDialog::findNext, this, &MainWindow::doFindNext);
@@ -131,25 +147,37 @@ void MainWindow::on_actionFont_triggered()
 {
     bool ok = false;
     QFont font = QFontDialog::getFont(&ok, editor->font(), this);
-    if (ok) editor->setFont(font);
+    if (ok)
+        editor->setFont(font);
 }
 
 void MainWindow::on_actionTextColor_triggered()
 {
     QColor c = QColorDialog::getColor(editor->palette().text().color(), this, "字体颜色");
-    if (c.isValid()) { QPalette p = editor->palette(); p.setColor(QPalette::Text, c); editor->setPalette(p); }
+    if (c.isValid())
+    {
+        QPalette p = editor->palette();
+        p.setColor(QPalette::Text, c);
+        editor->setPalette(p);
+    }
 }
 
 void MainWindow::on_actionBackgroundColor_triggered()
 {
     QColor c = QColorDialog::getColor(editor->palette().base().color(), this, "背景色");
-    if (c.isValid()) { QPalette p = editor->palette(); p.setColor(QPalette::Base, c); editor->setPalette(p); }
+    if (c.isValid())
+    {
+        QPalette p = editor->palette();
+        p.setColor(QPalette::Base, c);
+        editor->setPalette(p);
+    }
 }
 
 void MainWindow::on_actionTextBackgroundColor_triggered()
 {
     QColor c = QColorDialog::getColor(Qt::yellow, this, "字体背景色");
-    if (!c.isValid()) return;
+    if (!c.isValid())
+        return;
     QTextCursor cursor(editor->document());
     cursor.select(QTextCursor::Document);
     QTextCharFormat fmt;
@@ -184,11 +212,12 @@ void MainWindow::on_actionAbout_triggered()
     box.setIcon(QMessageBox::Information);
     box.setTextFormat(Qt::RichText);
     QString t = QString(
-        "<div style='min-width:360px;background-color:#2b2b2b;padding:12px;border-radius:6px;color:#fff'>"
-        "<div style='font-size:28px;font-weight:bold;margin-bottom:12px;color:#fff'>文本编辑器</div>"
-        "<div style='color:#fff;margin:8px 0;font-size:14px'>开发者：%1<br>学号：2023414290320<br>email：3162524860@qq.com</div>"
-        "<div style='margin-top:12px;color:#fff'>V1.0 build 202110</div>"
-        "</div>").arg(experimenterName);
+                    "<div style='min-width:360px;padding:12px;border-radius:6px;color:#fff'>"
+                    "<div style='font-size:28px;font-weight:bold;margin-bottom:12px;color:#fff'>文本编辑器</div>"
+                    "<div style='color:#fff;margin:8px 0;font-size:14px'>开发者：%1<br>学号：2023414290320<br>email：3162524860@qq.com</div>"
+                    "<div style='margin-top:12px;color:#fff'>V1.0 build 202110</div>"
+                    "</div>")
+                    .arg(experimenterName);
     box.setText(t);
     box.setStandardButtons(QMessageBox::Ok);
     box.exec();
@@ -196,7 +225,10 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_actionAutoSave_toggled(bool checked)
 {
-    if (checked) autosaveTimer.start(); else autosaveTimer.stop();
+    if (checked)
+        autosaveTimer.start();
+    else
+        autosaveTimer.stop();
 }
 
 void MainWindow::updateWindowTitle(bool modified)
@@ -211,7 +243,11 @@ void MainWindow::updateStatus()
     int len = editor->toPlainText().length();
     int lines = editor->document()->blockCount();
     statusInfo->setText(QString("length: %1  lines: %2  Ln: %3  Col: %4  %5")
-        .arg(len).arg(lines).arg(editor->currentLine()).arg(editor->currentColumn()).arg(name));
+                            .arg(len)
+                            .arg(lines)
+                            .arg(editor->currentLine())
+                            .arg(editor->currentColumn())
+                            .arg(name));
 }
 
 void MainWindow::updateClipboard()
@@ -220,30 +256,35 @@ void MainWindow::updateClipboard()
     ui->actionPaste->setEnabled(has);
 }
 
-void MainWindow::doFindNext(const QString& text, QTextDocument::FindFlags flags)
+void MainWindow::doFindNext(const QString &text, QTextDocument::FindFlags flags)
 {
-    if (!editor->find(text, flags)) QMessageBox::information(this, "查找", "未找到");
+    if (!editor->find(text, flags))
+        QMessageBox::information(this, "查找", "未找到");
 }
 
-void MainWindow::doFindPrev(const QString& text, QTextDocument::FindFlags flags)
+void MainWindow::doFindPrev(const QString &text, QTextDocument::FindFlags flags)
 {
-    if (!editor->find(text, flags | QTextDocument::FindBackward)) QMessageBox::information(this, "查找", "未找到");
+    if (!editor->find(text, flags | QTextDocument::FindBackward))
+        QMessageBox::information(this, "查找", "未找到");
 }
 
-void MainWindow::doReplaceOne(const QString& from, const QString& to, QTextDocument::FindFlags flags)
+void MainWindow::doReplaceOne(const QString &from, const QString &to, QTextDocument::FindFlags flags)
 {
     QTextCursor c = editor->textCursor();
-    if (c.hasSelection() && c.selectedText() == from) c.insertText(to);
+    if (c.hasSelection() && c.selectedText() == from)
+        c.insertText(to);
     editor->find(from, flags);
 }
 
-void MainWindow::doReplaceAll(const QString& from, const QString& to, QTextDocument::FindFlags flags)
+void MainWindow::doReplaceAll(const QString &from, const QString &to, QTextDocument::FindFlags flags)
 {
     QTextCursor c(editor->document());
     c.beginEditBlock();
-    while (true) {
+    while (true)
+    {
         QTextCursor found = editor->document()->find(from, c, flags);
-        if (found.isNull()) break;
+        if (found.isNull())
+            break;
         found.insertText(to);
         c = found;
     }
@@ -252,5 +293,6 @@ void MainWindow::doReplaceAll(const QString& from, const QString& to, QTextDocum
 
 void MainWindow::autosaveOnce()
 {
-    if (!filePath.isEmpty() && editor->document()->isModified()) on_actionSave_triggered();
+    if (!filePath.isEmpty() && editor->document()->isModified())
+        on_actionSave_triggered();
 }

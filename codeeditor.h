@@ -3,6 +3,7 @@
 
 #include <QPlainTextEdit>
 #include <QWidget>
+#include <QColor>
 
 class CodeEditor;
 
@@ -29,6 +30,7 @@ public:
     bool lineNumbersVisible() const;
     int currentLine() const;
     int currentColumn() const;
+    void setLineNumberColors(const QColor& bg, const QColor& fg);
 protected:
     void resizeEvent(QResizeEvent* event) override;
 private slots:
@@ -38,6 +40,8 @@ private slots:
 private:
     QWidget* m_lineNumberArea;
     bool m_showLineNumbers;
+    QColor m_lnBgColor;
+    QColor m_lnTextColor;
 };
 
 #endif // CODEEDITOR_H

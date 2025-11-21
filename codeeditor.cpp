@@ -13,6 +13,8 @@ CodeEditor::CodeEditor(QWidget* parent) : QPlainTextEdit(parent), m_lineNumberAr
     connect(this, &CodeEditor::blockCountChanged, this, &CodeEditor::updateLineNumberAreaWidth);
     connect(this, &CodeEditor::updateRequest, this, &CodeEditor::updateLineNumberArea);
     connect(this, &CodeEditor::cursorPositionChanged, this, &CodeEditor::highlightCurrentLine);
+    m_lnBgColor = QColor(80, 80, 80);
+    m_lnTextColor = QColor(255, 255, 255);
     updateLineNumberAreaWidth(0);
     highlightCurrentLine();
 }
@@ -72,7 +74,7 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent* event)
 {
     if (!m_showLineNumbers) return;
     QPainter painter(m_lineNumberArea);
-    painter.fillRect(event->rect(), palette().base());
+    painter.fillRect(event->rect(), m_lnBgColor);
     QTextBlock block = firstVisibleBlock();
     int blockNumber = block.blockNumber();
     int top = (int) blockBoundingGeometry(block).translated(contentOffset()).top();
@@ -80,7 +82,7 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent* event)
     while (block.isValid() && top <= event->rect().bottom()) {
         if (block.isVisible() && bottom >= event->rect().top()) {
             QString number = QString::number(blockNumber + 1);
-            painter.setPen(palette().text().color());
+            painter.setPen(m_lnTextColor);
             painter.drawText(0, top, m_lineNumberArea->width(), fontMetrics().height(), Qt::AlignRight, number);
         }
         block = block.next();
@@ -93,3 +95,9 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent* event)
 int CodeEditor::currentLine() const { return textCursor().blockNumber() + 1; }
 
 int CodeEditor::currentColumn() const { return textCursor().positionInBlock() + 1; }
+void CodeEditor::setLineNumberColors(const QColor& bg, const QColor& fg)
+{
+    m_lnBgColor = bg;
+    m_lnTextColor = fg;
+    m_lineNumberArea->update();
+}

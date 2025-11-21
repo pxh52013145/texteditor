@@ -36,7 +36,7 @@
     <addaction name="actionReplace"/>
    </widget>
   <widget class="QMenu" name="menuView">
-    <property name="title"><string>视图(&amp;V)</string></property>
+    <property name="title"><string>查看(&amp;V)</string></property>
     <addaction name="actionToggleToolbar"/>
     <addaction name="actionToggleStatusBar"/>
   </widget>
