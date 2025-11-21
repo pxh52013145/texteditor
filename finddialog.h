@@ -17,7 +17,6 @@ signals:
     void findPrevious(const QString& text, QTextDocument::FindFlags flags);
 private slots:
     void onFindNext();
-    void onFindPrev();
 private:
     Ui::FindDialog* ui;
 };

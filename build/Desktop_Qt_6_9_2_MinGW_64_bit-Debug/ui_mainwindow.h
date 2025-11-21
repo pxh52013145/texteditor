@@ -44,6 +44,7 @@ public:
     QAction *actionFont;
     QAction *actionTextColor;
     QAction *actionBackgroundColor;
+    QAction *actionTextBackgroundColor;
     QAction *actionToggleToolbar;
     QAction *actionToggleStatusBar;
     QAction *actionToggleLineNumbers;
@@ -105,6 +106,8 @@ public:
         actionTextColor->setObjectName("actionTextColor");
         actionBackgroundColor = new QAction(MainWindow);
         actionBackgroundColor->setObjectName("actionBackgroundColor");
+        actionTextBackgroundColor = new QAction(MainWindow);
+        actionTextBackgroundColor->setObjectName("actionTextBackgroundColor");
         actionToggleToolbar = new QAction(MainWindow);
         actionToggleToolbar->setObjectName("actionToggleToolbar");
         actionToggleToolbar->setCheckable(true);
@@ -159,17 +162,13 @@ public:
 
         menubar->addAction(menuFile->menuAction());
         menubar->addAction(menuEdit->menuAction());
-        menubar->addAction(menuView->menuAction());
         menubar->addAction(menuFormat->menuAction());
+        menubar->addAction(menuView->menuAction());
         menubar->addAction(menuHelp->menuAction());
-        menuFile->addAction(actionNewWindow);
         menuFile->addAction(actionNew);
         menuFile->addAction(actionOpen);
         menuFile->addAction(actionSave);
         menuFile->addAction(actionSaveAs);
-        menuFile->addAction(actionPrint);
-        menuFile->addSeparator();
-        menuFile->addAction(actionAutoSave);
         menuFile->addSeparator();
         menuFile->addAction(actionExit);
         menuEdit->addAction(actionUndo);
@@ -184,10 +183,11 @@ public:
         menuEdit->addAction(actionReplace);
         menuView->addAction(actionToggleToolbar);
         menuView->addAction(actionToggleStatusBar);
-        menuView->addAction(actionToggleLineNumbers);
-        menuView->addAction(actionToggleWordWrap);
+        menuFormat->addAction(actionToggleWordWrap);
+        menuFormat->addAction(actionToggleLineNumbers);
         menuFormat->addAction(actionFont);
         menuFormat->addAction(actionTextColor);
+        menuFormat->addAction(actionTextBackgroundColor);
         menuFormat->addAction(actionBackgroundColor);
         menuHelp->addAction(actionAbout);
         mainToolBar->addAction(actionNew);
@@ -241,9 +241,9 @@ public:
 #if QT_CONFIG(shortcut)
         actionUndo->setShortcut(QCoreApplication::translate("MainWindow", "Ctrl+Z", nullptr));
 #endif // QT_CONFIG(shortcut)
-        actionRedo->setText(QCoreApplication::translate("MainWindow", "\351\207\215\345\201\232", nullptr));
+        actionRedo->setText(QCoreApplication::translate("MainWindow", "\346\201\242\345\244\215", nullptr));
 #if QT_CONFIG(shortcut)
-        actionRedo->setShortcut(QCoreApplication::translate("MainWindow", "Ctrl+Y", nullptr));
+        actionRedo->setShortcut(QCoreApplication::translate("MainWindow", "Ctrl+Shift+Z", nullptr));
 #endif // QT_CONFIG(shortcut)
         actionCut->setText(QCoreApplication::translate("MainWindow", "\345\211\252\345\210\207", nullptr));
 #if QT_CONFIG(shortcut)
@@ -272,6 +272,7 @@ public:
         actionFont->setText(QCoreApplication::translate("MainWindow", "\345\255\227\344\275\223...", nullptr));
         actionTextColor->setText(QCoreApplication::translate("MainWindow", "\345\255\227\344\275\223\351\242\234\350\211\262...", nullptr));
         actionBackgroundColor->setText(QCoreApplication::translate("MainWindow", "\347\274\226\350\276\221\345\231\250\350\203\214\346\231\257\350\211\262...", nullptr));
+        actionTextBackgroundColor->setText(QCoreApplication::translate("MainWindow", "\345\255\227\344\275\223\350\203\214\346\231\257\350\211\262...", nullptr));
         actionToggleToolbar->setText(QCoreApplication::translate("MainWindow", "\346\230\276\347\244\272\345\267\245\345\205\267\346\240\217", nullptr));
         actionToggleStatusBar->setText(QCoreApplication::translate("MainWindow", "\346\230\276\347\244\272\347\212\266\346\200\201\346\240\217", nullptr));
         actionToggleLineNumbers->setText(QCoreApplication::translate("MainWindow", "\346\230\276\347\244\272\350\241\214\345\217\267", nullptr));

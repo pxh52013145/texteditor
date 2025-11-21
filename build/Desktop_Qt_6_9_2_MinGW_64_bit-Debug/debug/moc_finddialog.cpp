@@ -46,8 +46,7 @@ template <> constexpr inline auto FindDialog::qt_create_metaobjectdata<qt_meta_t
         "QTextDocument::FindFlags",
         "flags",
         "findPrevious",
-        "onFindNext",
-        "onFindPrev"
+        "onFindNext"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -61,8 +60,6 @@ template <> constexpr inline auto FindDialog::qt_create_metaobjectdata<qt_meta_t
         }}),
         // Slot 'onFindNext'
         QtMocHelpers::SlotData<void()>(7, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onFindPrev'
-        QtMocHelpers::SlotData<void()>(8, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -89,7 +86,6 @@ void FindDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 0: _t->findNext((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QTextDocument::FindFlags>>(_a[2]))); break;
         case 1: _t->findPrevious((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QTextDocument::FindFlags>>(_a[2]))); break;
         case 2: _t->onFindNext(); break;
-        case 3: _t->onFindPrev(); break;
         default: ;
         }
     }
@@ -120,14 +116,14 @@ int FindDialog::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 4)
+        if (_id < 3)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 4;
+        _id -= 3;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 4)
+        if (_id < 3)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 4;
+        _id -= 3;
     }
     return _id;
 }

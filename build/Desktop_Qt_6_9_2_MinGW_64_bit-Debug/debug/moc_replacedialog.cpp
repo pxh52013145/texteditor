@@ -47,6 +47,9 @@ template <> constexpr inline auto ReplaceDialog::qt_create_metaobjectdata<qt_met
         "QTextDocument::FindFlags",
         "flags",
         "replaceAll",
+        "findNext",
+        "text",
+        "onFindNext",
         "onReplaceOne",
         "onReplaceAll"
     };
@@ -60,10 +63,16 @@ template <> constexpr inline auto ReplaceDialog::qt_create_metaobjectdata<qt_met
         QtMocHelpers::SignalData<void(const QString &, const QString &, QTextDocument::FindFlags)>(7, 2, QMC::AccessPublic, QMetaType::Void, {{
             { QMetaType::QString, 3 }, { QMetaType::QString, 4 }, { 0x80000000 | 5, 6 },
         }}),
+        // Signal 'findNext'
+        QtMocHelpers::SignalData<void(const QString &, QTextDocument::FindFlags)>(8, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 9 }, { 0x80000000 | 5, 6 },
+        }}),
+        // Slot 'onFindNext'
+        QtMocHelpers::SlotData<void()>(10, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onReplaceOne'
-        QtMocHelpers::SlotData<void()>(8, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(11, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onReplaceAll'
-        QtMocHelpers::SlotData<void()>(9, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(12, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -89,8 +98,10 @@ void ReplaceDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         switch (_id) {
         case 0: _t->replaceOne((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<QTextDocument::FindFlags>>(_a[3]))); break;
         case 1: _t->replaceAll((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<QTextDocument::FindFlags>>(_a[3]))); break;
-        case 2: _t->onReplaceOne(); break;
-        case 3: _t->onReplaceAll(); break;
+        case 2: _t->findNext((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QTextDocument::FindFlags>>(_a[2]))); break;
+        case 3: _t->onFindNext(); break;
+        case 4: _t->onReplaceOne(); break;
+        case 5: _t->onReplaceAll(); break;
         default: ;
         }
     }
@@ -98,6 +109,8 @@ void ReplaceDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         if (QtMocHelpers::indexOfMethod<void (ReplaceDialog::*)(const QString & , const QString & , QTextDocument::FindFlags )>(_a, &ReplaceDialog::replaceOne, 0))
             return;
         if (QtMocHelpers::indexOfMethod<void (ReplaceDialog::*)(const QString & , const QString & , QTextDocument::FindFlags )>(_a, &ReplaceDialog::replaceAll, 1))
+            return;
+        if (QtMocHelpers::indexOfMethod<void (ReplaceDialog::*)(const QString & , QTextDocument::FindFlags )>(_a, &ReplaceDialog::findNext, 2))
             return;
     }
 }
@@ -121,14 +134,14 @@ int ReplaceDialog::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 4)
+        if (_id < 6)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 4;
+        _id -= 6;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 4)
+        if (_id < 6)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 4;
+        _id -= 6;
     }
     return _id;
 }
@@ -143,5 +156,11 @@ void ReplaceDialog::replaceOne(const QString & _t1, const QString & _t2, QTextDo
 void ReplaceDialog::replaceAll(const QString & _t1, const QString & _t2, QTextDocument::FindFlags _t3)
 {
     QMetaObject::activate<void>(this, &staticMetaObject, 1, nullptr, _t1, _t2, _t3);
+}
+
+// SIGNAL 2
+void ReplaceDialog::findNext(const QString & _t1, QTextDocument::FindFlags _t2)
+{
+    QMetaObject::activate<void>(this, &staticMetaObject, 2, nullptr, _t1, _t2);
 }
 QT_WARNING_POP

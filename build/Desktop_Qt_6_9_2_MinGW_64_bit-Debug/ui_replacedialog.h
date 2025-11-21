@@ -13,11 +13,13 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialog>
-#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
@@ -25,14 +27,18 @@ QT_BEGIN_NAMESPACE
 class Ui_ReplaceDialog
 {
 public:
-    QVBoxLayout *verticalLayout;
-    QFormLayout *formLayout;
+    QGridLayout *gridLayout;
     QLabel *labelFind;
     QLineEdit *editFind;
     QLabel *labelReplace;
     QLineEdit *editReplace;
+    QGroupBox *groupDirection;
+    QHBoxLayout *dirLayout;
+    QRadioButton *radioUp;
+    QRadioButton *radioDown;
     QCheckBox *chkCase;
-    QHBoxLayout *horizontalLayout;
+    QVBoxLayout *rightColumn;
+    QPushButton *btnFindNext;
     QPushButton *btnReplace;
     QPushButton *btnReplaceAll;
     QPushButton *btnClose;
@@ -41,57 +47,85 @@ public:
     {
         if (ReplaceDialog->objectName().isEmpty())
             ReplaceDialog->setObjectName("ReplaceDialog");
-        verticalLayout = new QVBoxLayout(ReplaceDialog);
-        verticalLayout->setObjectName("verticalLayout");
-        formLayout = new QFormLayout();
-        formLayout->setObjectName("formLayout");
+        ReplaceDialog->setMinimumSize(QSize(540, 220));
+        gridLayout = new QGridLayout(ReplaceDialog);
+        gridLayout->setSpacing(8);
+        gridLayout->setObjectName("gridLayout");
+        gridLayout->setContentsMargins(8, 8, 8, 8);
         labelFind = new QLabel(ReplaceDialog);
         labelFind->setObjectName("labelFind");
 
-        formLayout->setWidget(0, QFormLayout::ItemRole::LabelRole, labelFind);
+        gridLayout->addWidget(labelFind, 0, 0, 1, 1);
 
         editFind = new QLineEdit(ReplaceDialog);
         editFind->setObjectName("editFind");
+        editFind->setMinimumWidth(280);
 
-        formLayout->setWidget(0, QFormLayout::ItemRole::FieldRole, editFind);
+        gridLayout->addWidget(editFind, 0, 1, 1, 1);
 
         labelReplace = new QLabel(ReplaceDialog);
         labelReplace->setObjectName("labelReplace");
 
-        formLayout->setWidget(1, QFormLayout::ItemRole::LabelRole, labelReplace);
+        gridLayout->addWidget(labelReplace, 1, 0, 1, 1);
 
         editReplace = new QLineEdit(ReplaceDialog);
         editReplace->setObjectName("editReplace");
+        editReplace->setMinimumWidth(280);
 
-        formLayout->setWidget(1, QFormLayout::ItemRole::FieldRole, editReplace);
+        gridLayout->addWidget(editReplace, 1, 1, 1, 1);
+
+        groupDirection = new QGroupBox(ReplaceDialog);
+        groupDirection->setObjectName("groupDirection");
+        dirLayout = new QHBoxLayout(groupDirection);
+        dirLayout->setObjectName("dirLayout");
+        radioUp = new QRadioButton(groupDirection);
+        radioUp->setObjectName("radioUp");
+
+        dirLayout->addWidget(radioUp);
+
+        radioDown = new QRadioButton(groupDirection);
+        radioDown->setObjectName("radioDown");
+        radioDown->setChecked(true);
+
+        dirLayout->addWidget(radioDown);
 
 
-        verticalLayout->addLayout(formLayout);
+        gridLayout->addWidget(groupDirection, 2, 0, 1, 2);
 
         chkCase = new QCheckBox(ReplaceDialog);
         chkCase->setObjectName("chkCase");
 
-        verticalLayout->addWidget(chkCase);
+        gridLayout->addWidget(chkCase, 3, 0, 1, 2);
 
-        horizontalLayout = new QHBoxLayout();
-        horizontalLayout->setObjectName("horizontalLayout");
+        rightColumn = new QVBoxLayout();
+        rightColumn->setSpacing(8);
+        rightColumn->setObjectName("rightColumn");
+        btnFindNext = new QPushButton(ReplaceDialog);
+        btnFindNext->setObjectName("btnFindNext");
+        btnFindNext->setMinimumWidth(120);
+
+        rightColumn->addWidget(btnFindNext);
+
         btnReplace = new QPushButton(ReplaceDialog);
         btnReplace->setObjectName("btnReplace");
+        btnReplace->setMinimumWidth(120);
 
-        horizontalLayout->addWidget(btnReplace);
+        rightColumn->addWidget(btnReplace);
 
         btnReplaceAll = new QPushButton(ReplaceDialog);
         btnReplaceAll->setObjectName("btnReplaceAll");
+        btnReplaceAll->setMinimumWidth(120);
 
-        horizontalLayout->addWidget(btnReplaceAll);
+        rightColumn->addWidget(btnReplaceAll);
 
         btnClose = new QPushButton(ReplaceDialog);
         btnClose->setObjectName("btnClose");
+        btnClose->setMinimumWidth(120);
 
-        horizontalLayout->addWidget(btnClose);
+        rightColumn->addWidget(btnClose);
 
 
-        verticalLayout->addLayout(horizontalLayout);
+        gridLayout->addLayout(rightColumn, 0, 2, 4, 1);
 
 
         retranslateUi(ReplaceDialog);
@@ -103,12 +137,16 @@ public:
     void retranslateUi(QDialog *ReplaceDialog)
     {
         ReplaceDialog->setWindowTitle(QCoreApplication::translate("ReplaceDialog", "\346\233\277\346\215\242", nullptr));
-        labelFind->setText(QCoreApplication::translate("ReplaceDialog", "\346\237\245\346\211\276\345\206\205\345\256\271\357\274\232", nullptr));
-        labelReplace->setText(QCoreApplication::translate("ReplaceDialog", "\346\233\277\346\215\242\344\270\272\357\274\232", nullptr));
+        labelFind->setText(QCoreApplication::translate("ReplaceDialog", "\346\237\245\346\211\276\347\233\256\346\240\207:", nullptr));
+        labelReplace->setText(QCoreApplication::translate("ReplaceDialog", "\346\233\277\346\215\242\344\270\272:", nullptr));
+        groupDirection->setTitle(QCoreApplication::translate("ReplaceDialog", "\346\226\271\345\220\221", nullptr));
+        radioUp->setText(QCoreApplication::translate("ReplaceDialog", "\345\220\221\344\270\212(&U)", nullptr));
+        radioDown->setText(QCoreApplication::translate("ReplaceDialog", "\345\220\221\344\270\213(&D)", nullptr));
         chkCase->setText(QCoreApplication::translate("ReplaceDialog", "\345\214\272\345\210\206\345\244\247\345\260\217\345\206\231", nullptr));
-        btnReplace->setText(QCoreApplication::translate("ReplaceDialog", "\346\233\277\346\215\242", nullptr));
-        btnReplaceAll->setText(QCoreApplication::translate("ReplaceDialog", "\345\205\250\351\203\250\346\233\277\346\215\242", nullptr));
-        btnClose->setText(QCoreApplication::translate("ReplaceDialog", "\345\205\263\351\227\255", nullptr));
+        btnFindNext->setText(QCoreApplication::translate("ReplaceDialog", "\346\237\245\346\211\276\344\270\213\344\270\200\344\270\252(&F)", nullptr));
+        btnReplace->setText(QCoreApplication::translate("ReplaceDialog", "\346\233\277\346\215\242(&R)", nullptr));
+        btnReplaceAll->setText(QCoreApplication::translate("ReplaceDialog", "\345\205\250\351\203\250\346\233\277\346\215\242(&A)", nullptr));
+        btnClose->setText(QCoreApplication::translate("ReplaceDialog", "\345\217\226\346\266\210", nullptr));
     } // retranslateUi
 
 };

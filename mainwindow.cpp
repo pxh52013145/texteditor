@@ -18,15 +18,15 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
     editor = qobject_cast<CodeEditor*>(ui->plainTextEdit);
     if (!editor) editor = new CodeEditor(this), setCentralWidget(editor);
-    QAction* actionTextBg = new QAction("字体背景色...", this);
-    ui->menuFormat->insertAction(ui->actionBackgroundColor, actionTextBg);
-    connect(actionTextBg, &QAction::triggered, this, &MainWindow::on_actionTextBackgroundColor_triggered);
+    experimenterName = QStringLiteral("潘翾寰");
+    connect(ui->actionTextBackgroundColor, &QAction::triggered, this, &MainWindow::on_actionTextBackgroundColor_triggered);
     ui->actionToggleLineNumbers->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
     setWindowTitle("未命名 - 文本编辑器");
     statusBar()->addPermanentWidget(statusInfo);
     connect(editor->document(), &QTextDocument::modificationChanged, this, &MainWindow::updateWindowTitle);
     connect(editor, &CodeEditor::cursorPositionChanged, this, &MainWindow::updateStatus);
     connect(editor, &CodeEditor::blockCountChanged, this, &MainWindow::updateStatus);
+    connect(editor, &CodeEditor::textChanged, this, &MainWindow::updateStatus);
     connect(editor, &CodeEditor::copyAvailable, ui->actionCut, &QAction::setEnabled);
     connect(editor, &CodeEditor::copyAvailable, ui->actionCopy, &QAction::setEnabled);
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &MainWindow::updateClipboard);
@@ -122,6 +122,7 @@ void MainWindow::on_actionReplace_triggered()
     ReplaceDialog* dlg = new ReplaceDialog(this);
     connect(dlg, &ReplaceDialog::replaceOne, this, &MainWindow::doReplaceOne);
     connect(dlg, &ReplaceDialog::replaceAll, this, &MainWindow::doReplaceAll);
+    connect(dlg, &ReplaceDialog::findNext, this, &MainWindow::doFindNext);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->show();
 }
@@ -178,8 +179,19 @@ void MainWindow::on_actionToggleStatusBar_toggled(bool checked)
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QString t = "作者: 学生\n实验: LAB2 多窗口文本编辑器\n参考: Qt 文档";
-    QMessageBox::about(this, "关于", t);
+    QMessageBox box(this);
+    box.setWindowTitle("关于");
+    box.setIcon(QMessageBox::Information);
+    box.setTextFormat(Qt::RichText);
+    QString t = QString(
+        "<div style='min-width:360px;background-color:#2b2b2b;padding:12px;border-radius:6px;color:#fff'>"
+        "<div style='font-size:28px;font-weight:bold;margin-bottom:12px;color:#fff'>文本编辑器</div>"
+        "<div style='color:#fff;margin:8px 0;font-size:14px'>开发者：%1<br>学号：2023414290320<br>email：3162524860@qq.com</div>"
+        "<div style='margin-top:12px;color:#fff'>V1.0 build 202110</div>"
+        "</div>").arg(experimenterName);
+    box.setText(t);
+    box.setStandardButtons(QMessageBox::Ok);
+    box.exec();
 }
 
 void MainWindow::on_actionAutoSave_toggled(bool checked)
@@ -195,9 +207,11 @@ void MainWindow::updateWindowTitle(bool modified)
 
 void MainWindow::updateStatus()
 {
-    statusInfo->setText(QString("Ln %1, Col %2  %3")
-        .arg(editor->currentLine()).arg(editor->currentColumn())
-        .arg(editor->lineNumbersVisible() ? "行号:开" : "行号:关"));
+    QString name = experimenterName.isEmpty() ? QStringLiteral("用户") : experimenterName;
+    int len = editor->toPlainText().length();
+    int lines = editor->document()->blockCount();
+    statusInfo->setText(QString("length: %1  lines: %2  Ln: %3  Col: %4  %5")
+        .arg(len).arg(lines).arg(editor->currentLine()).arg(editor->currentColumn()).arg(name));
 }
 
 void MainWindow::updateClipboard()

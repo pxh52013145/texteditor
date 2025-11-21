@@ -5,48 +5,114 @@
   <property name="windowTitle">
    <string>查找</string>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>420</width>
+    <height>160</height>
+   </size>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>8</number>
+   </property>
+   <property name="leftMargin">
+    <number>8</number>
+   </property>
+   <property name="topMargin">
+    <number>8</number>
+   </property>
+   <property name="rightMargin">
+    <number>8</number>
+   </property>
+   <property name="bottomMargin">
+    <number>8</number>
+   </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="row1">
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>查找内容：</string>
+        <string>查找目标:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="editText"/>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="chkCase">
-     <property name="text">
-      <string>区分大小写</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QPushButton" name="btnFindPrev">
-       <property name="text">
-        <string>向上查找</string>
+      <widget class="QLineEdit" name="editText">
+       <property name="minimumWidth">
+        <number>240</number>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btnFindNext">
        <property name="text">
-        <string>向下查找</string>
+        <string>查找下一个(&amp;F)</string>
+       </property>
+       <property name="minimumWidth">
+        <number>110</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupDirection">
+     <property name="title">
+      <string>方向</string>
+     </property>
+     <layout class="QHBoxLayout" name="dirLayout">
+      <item>
+       <widget class="QRadioButton" name="radioUp">
+        <property name="text">
+         <string>向上(&amp;U)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioDown">
+        <property name="text">
+         <string>向下(&amp;D)</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="row3">
+     <item>
+      <widget class="QCheckBox" name="chkCase">
+       <property name="text">
+        <string>区分大小写</string>
        </property>
       </widget>
      </item>
      <item>
+      <spacer name="spacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
       <widget class="QPushButton" name="btnClose">
        <property name="text">
-        <string>关闭</string>
+        <string>取消</string>
+       </property>
+       <property name="minimumWidth">
+        <number>110</number>
        </property>
       </widget>
      </item>

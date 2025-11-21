@@ -54,6 +54,7 @@ private:
     QString filePath;
     QTimer autosaveTimer;
     QLabel* statusInfo;
+    QString experimenterName;
 };
 
 #endif // MAINWINDOW_H

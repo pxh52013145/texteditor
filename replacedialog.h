@@ -15,7 +15,9 @@ public:
 signals:
     void replaceOne(const QString& from, const QString& to, QTextDocument::FindFlags flags);
     void replaceAll(const QString& from, const QString& to, QTextDocument::FindFlags flags);
+    void findNext(const QString& text, QTextDocument::FindFlags flags);
 private slots:
+    void onFindNext();
     void onReplaceOne();
     void onReplaceAll();
 private:
